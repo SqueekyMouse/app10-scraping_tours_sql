@@ -1,6 +1,9 @@
 import requests
 import selectorlib
-# commit: track new events in file Sec38
+# from send_email import send_email
+import os
+import smtplib, ssl
+# commit: send email Sec38
 
 URL='http://programmer100.pythonanywhere.com/tours/'
 # some servers dont allow scraping so supply headers if necessary!!!
@@ -19,8 +22,17 @@ def extract(source):
     # #displaytimer - copied from firefox > page > inspector > copy css selector!!!
     return(value)
 
-def send_email():
-    print('emails sent')
+def send_email(message):
+    host='smtp.gmail.com'
+    port=465
+    username='appuser565@gmail.com'
+    password=os.getenv('APP_M_PASSWORD')
+    receiver='appuser565@gmail.com'
+    context=ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(host=host,port=port,context=context) as server:
+        server.login(user=username,password=password)
+        server.sendmail(from_addr=username,to_addrs=receiver,msg=message)
 
 def store(extracted):
     with open('data.txt','a') as file:
@@ -39,5 +51,5 @@ if __name__=='__main__':
     if extracted!='No upcoming tours':
         if extracted not in content: # dont send multiple mails for smae event
             store(extracted) # store emailed events in file
-            send_email()
+            send_email(message='Hey, new event was found')
             
