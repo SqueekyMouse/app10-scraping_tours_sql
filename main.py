@@ -1,6 +1,6 @@
 import requests
 import selectorlib
-# commit: extract data by selector Sec38
+# commit: track new events in file Sec38
 
 URL='http://programmer100.pythonanywhere.com/tours/'
 # some servers dont allow scraping so supply headers if necessary!!!
@@ -19,7 +19,25 @@ def extract(source):
     # #displaytimer - copied from firefox > page > inspector > copy css selector!!!
     return(value)
 
+def send_email():
+    print('emails sent')
+
+def store(extracted):
+    with open('data.txt','a') as file:
+        file.write(f'{extracted}\n')
+
+def read(extracted):
+    with open('data.txt','r') as file:
+        return(file.read())
+
 if __name__=='__main__':
     scraped=scrape(URL)
     extracted=extract(scraped)
     print(extracted)
+    content=read(extracted)
+
+    if extracted!='No upcoming tours':
+        if extracted not in content: # dont send multiple mails for smae event
+            store(extracted) # store emailed events in file
+            send_email()
+            
