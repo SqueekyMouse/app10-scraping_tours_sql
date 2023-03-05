@@ -1,6 +1,6 @@
 import requests
 import selectorlib
-# commit: get page source Sec38
+# commit: extract data by selector Sec38
 
 URL='http://programmer100.pythonanywhere.com/tours/'
 # some servers dont allow scraping so supply headers if necessary!!!
@@ -13,5 +13,13 @@ def scrape(url):
     source=response.text
     return(source)
 
+def extract(source):
+    extractor=selectorlib.Extractor.from_yaml_file('extract.yaml')
+    value=extractor.extract(source)['tours'] # tours key is set in the yaml file val is tag '#displaytimer'
+    # #displaytimer - copied from firefox > page > inspector > copy css selector!!!
+    return(value)
+
 if __name__=='__main__':
-    print(scrape(URL))
+    scraped=scrape(URL)
+    extracted=extract(scraped)
+    print(extracted)
