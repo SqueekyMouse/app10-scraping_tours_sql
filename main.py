@@ -1,6 +1,5 @@
 import requests
 import selectorlib
-# from send_email import send_email
 import os
 import smtplib, ssl
 import time
@@ -38,7 +37,7 @@ def send_email(message):
     password=os.getenv('APP_M_PASSWORD')
     receiver='appuser565@gmail.com'
     context=ssl.create_default_context()
-
+    
     with smtplib.SMTP_SSL(host=host,port=port,context=context) as server:
         server.login(user=username,password=password)
         server.sendmail(from_addr=username,to_addrs=receiver,msg=message)
@@ -67,7 +66,7 @@ if __name__=='__main__':
         scraped=scrape(URL)
         extracted=extract(scraped)
         print(extracted)
-
+        
         if extracted!='No upcoming tours':
             row=read(extracted) # to check if its already present in db
             if not row: # check for empty list!!! non-empty is True, empty is False!!!
