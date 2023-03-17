@@ -6,6 +6,8 @@ import time
 import sqlite3
 # commit: store records in sqlite db Sec39
 
+# commit: testing_a branch test
+
 # "INSERT INTO events VALUES ('Tigers','Tiger City','2088.10.14')"
 # "SELECT * FROM events WHERE date='2088.10.15'"
 # "DELETE FROM events WHERE band='Tigres'"
